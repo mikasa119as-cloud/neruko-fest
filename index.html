@@ -18,6 +18,53 @@
       font-family:'Poppins',sans-serif;
     }
 
+    /* VENUE SECTION */
+    .venue-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+      background: rgba(23, 23, 39, 0.8);
+      padding: 30px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .venue-info h3 {
+      color: #ff4fd8;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .venue-info p {
+      color: #ccc;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .map-responsive {
+      overflow: hidden;
+      padding-bottom: 56.25%;
+      position: relative;
+      height: 0;
+      border-radius: 15px;
+    }
+
+    .map-responsive iframe {
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      border: 0;
+    }
+
+    @media (max-width: 768px) {
+      .venue-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Overlay untuk memicu musik */
     #music-overlay {
       position: fixed;
@@ -347,6 +394,35 @@
     </div>
   </section>
 
+<section id="location">
+    <div class="title">
+      <h2>📍 Lokasi Acara</h2>
+      <p>Sampai jumpa di pusat kota Bandung!</p>
+    </div>
+
+    <div class="venue-container">
+      <div class="venue-info">
+        <h3> Yogya Kepatihan</h3>
+        <p>
+          Jl. Kepatihan No.11-17, Balonggede, Kec. Regol, Kota Bandung, Jawa Barat 40251<br><br>
+          Area event berada di lantai utama. Strategis, mudah diakses dengan transportasi umum maupun kendaraan pribadi.
+        </p>
+        <a href="https://maps.app.goo.gl/PDKfXhLygK49kig76" target="_blank" class="btn">
+          BUKA DI GOOGLE MAPS
+        </a>
+      </div>
+
+      <div class="map-responsive">
+        <!-- Google Maps Embed Link untuk Yogya Kepatihan -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.771239611388!2d107.6041695750438!3d-6.917943993081622!2m3!1f0!2f0!3f0!3m2!1i1024!2i1024!4f13.1!3m3!1m2!1s0x2e68e63066607065%3A0x33682977d64380f2!2sYogya%20Kepatihan!5e0!3m2!1sid!2sid!4v1715650000000!5m2!1sid!2sid" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
   <footer>
     © 2026 NEROKU FEST — All Rights Reserved ✨
   </footer>
