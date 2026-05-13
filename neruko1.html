@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEROKU FEST 2026</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body {
+  background: #0d0d16;
+  color: white;
+  overflow-x: hidden;
+  /* Tambahkan baris ini */
+  padding-top: 80px; 
+}
+
+    header{
+      width:100%;
+      min-height:100vh;
+      background:
+      linear-gradient(rgba(0,0,0,.75), rgba(20,0,40,.85)),
+      url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2070&auto=format&fit=crop'),
+      linear-gradient(135deg, #1a0033 0%, #330066 50%, #6600cc 100%);
+      background-size:cover;
+      background-position:center;
+      background-blend-mode:overlay;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+      flex-direction:column;
+      position:relative;
+    }
+
+    /* Anime particles effect */
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ff4fd8, transparent),
+        radial-gradient(2px 2px at 40px 70px, #8b5cf6, transparent),
+        radial-gradient(1px 1px at 90px 40px, #00d4ff, transparent);
+      background-repeat: repeat;
+      background-size: 200px 100px;
+      animation: float 20s linear infinite;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
+
+    .hero{
+      max-width:900px;
+      position:relative;
+      z-index:2;
+    }
+
+    .hero h1{
+      font-size:80px;
+      font-weight:800;
+      background:linear-gradient(45deg, #ff4fd8, #8b5cf6, #00d4ff, #ff6b9d);
+      background-size:300% 300%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation: gradientShift 3s ease infinite;
+      margin-bottom:20px;
+      text-shadow: 0 0 30px rgba(255,79,216,0.5);
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero p{
+      font-size:20px;
+      line-height:1.8;
+      color:#ddd;
+      margin-bottom:30px;
+    }
+
+    .countdown{
+      background:linear-gradient(135deg, rgba(255,79,216,.15), rgba(139,92,246,.15), rgba(0,212,255,.1));
+      backdrop-filter:blur(20px);
+      border:2px solid rgba(255,79,216,.4);
+      border-radius:25px;
+      padding:40px 30px;
+      margin:30px auto;
+      max-width:600px;
+    }
+
+    .countdown-timer{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .time-unit{
+      text-align:center;
+      min-width:80px;
+      background: rgba(255,255,255,0.05);
+      padding:15px 10px;
+      border-radius:15px;
+    }
+
+    .time-number{
+      font-size:48px;
+      font-weight:800;
+      color: #ff4fd8;
+      display:block;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:15px 35px;
+      border-radius:50px;
+      background:linear-gradient(45deg, #ff4fd8, #8b5cf6, #00d4ff);
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s;
+      margin:10px;
+    }
+
+    .btn:hover{
+      transform:translateY(-5px);
+      box-shadow:0 10px 30px rgba(255,79,216,.5);
+    }
+
+    nav{
+      position:fixed;
+      top:0;
+      width:100%;
+      padding:20px 8%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:rgba(13,13,22,.95);
+      backdrop-filter:blur(20px);
+      z-index:1000;
+      border-bottom:1px solid rgba(255,79,216,.2);
+    }
+
+    nav h2 { background:linear-gradient(45deg,#ff4fd8,#8b5cf6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    nav ul{ display:flex; list-style:none; gap:30px; }
+    nav ul li a{ color:#ddd; text-decoration:none; transition:.3s; }
+    nav ul li a:hover{ color:#ff4fd8; }
+
+    section{ padding:90px 8%; }
+    .title{ text-align:center; margin-bottom:50px; }
+    .title h2{ font-size:42px; background:linear-gradient(45deg,#ff4fd8,#8b5cf6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    .about-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; }
+    .card{ background:rgba(23,23,39,.8); padding:30px; border-radius:20px; border:1px solid rgba(255,255,255,.05); transition:.3s; }
+    .card:hover{ transform:translateY(-10px); border-color:#8b5cf6; }
+
+    .schedule{ background:rgba(20,20,33,.9); border-radius:20px; overflow:hidden; }
+    .schedule-item{ display:flex; justify-content:space-between; padding:20px; border-bottom:1px solid rgba(255,255,255,.05); }
+
+    .ticket-container{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; }
+    .ticket{ background:rgba(29,29,49,.9); padding:35px; border-radius:25px; text-align:center; border:1px solid rgba(255,255,255,.05); }
+    .price{ font-size:40px; font-weight:700; margin:20px 0; color:#00d4ff; }
+
+    .contact { background:rgba(21,21,37,.9); padding:50px; border-radius:25px; text-align:center; }
+    footer{ text-align:center; padding:30px; color:#888; background:#0d0d16; }
+
+    .ticket-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch; /* Memastikan tinggi kotak sama */
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+
+  .ticket {
+    flex: 1; /* Memberikan ruang yang sama */
+    min-width: 300px; /* Lebar minimum agar tidak terlalu gepeng */
+    max-width: 400px;
+    background: rgba(29, 29, 49, 0.9);
+    padding: 40px 30px;
+    border-radius: 25px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: .3s;
+    display: flex;
+    flex-direction: column; /* Menyusun isi tiket secara vertikal */
+    justify-content: space-between; /* Tombol akan selalu di paling bawah */
+  }
+
+  .ticket:hover {
+    border-color: #ff4fd8;
+    transform: translateY(-5px);
+  }
+
+  .bundle-highlight {
+    border: 2px solid #ff4fd8 !important;
+    background: linear-gradient(180deg, rgba(45, 20, 70, 0.9), rgba(17, 17, 27, 0.9)) !important;
+  }
+
+  /* Responsive: di HP akan menumpuk, di PC akan sejajar */
+  @media (max-width: 768px) {
+    .ticket-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .ticket {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h2>NEROKU FEST</h2>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#schedule">Rundown</a></li>
+      <li><a href="#ticket">Ticket</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <h1>NEROKU FEST 2026</h1>
+      <p>Festival budaya Jepang interaktif dan penuh energi di jantung kota Bandung.</p>
+      
+      <div class="countdown" id="countdown">
+        <h3 style="margin-bottom:20px">⏰ Menuju NEROKU FEST 2026</h3>
+        <div class="countdown-timer">
+          <div class="time-unit"><span class="time-number" id="days">00</span><span class="time-label">Hari</span></div>
+          <div class="time-unit"><span class="time-number" id="hours">00</span><span class="time-label">Jam</span></div>
+          <div class="time-unit"><span class="time-number" id="minutes">00</span><span class="time-label">Menit</span></div>
+          <div class="time-unit"><span class="time-number" id="seconds">00</span><span class="time-label">Detik</span></div>
+        </div>
+      </div>
+
+      <a href="#ticket" class="btn">BELI TIKET</a>
+      <a href="#about" class="btn">INFO EVENT</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="title">
+      <h2>Tentang NEROKU FEST</h2>
+      <p>Lebih dari sekadar festival, ini adalah ruang bagi para pecinta budaya pop Jepang untuk bersatu.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="card">
+        <h3>🎤 Anisong Karaoke</h3>
+        <p>Tunjukkan bakatmu di panggung besar! Kompetisi karaoke lagu anime dengan hadiah eksklusif untuk pemenang terbaik.</p>
+      </div>
+
+      <div class="card">
+        <h3>⭐ Idol & Band Performance</h3>
+        <p>Dimeriahkan oleh Guest Star Idol Group nasional dan band lokal yang akan membawakan lagu-lagu hits J-Pop.</p>
+      </div>
+
+      <div class="card">
+        <h3>💃 Random Play Dance</h3>
+        <p>Area khusus bagi komunitas dance untuk seru-seruan bareng mengikuti playlist lagu Jepang & Korea paling viral.</p>
+      </div>
+
+      <div class="card">
+        <h3>🛍️ Harajuku Market</h3>
+        <p>Dapatkan merchandise original, doujinshi, hingga action figure langka di puluhan booth komunitas dan brand resmi.</p>
+      </div>
+      
+      <div class="card">
+        <h3>📸 Cosplay Walk</h3>
+        <p>Parade kostum karakter anime, game, dan manga. Tersedia juga photo booth bertema khusus untuk para cosplayer.</p>
+      </div>
+
+      <div class="card">
+        <h3>🍱 Japanese Food Area</h3>
+        <p>Nikmati berbagai kuliner khas Jepang seperti Takoyaki, Okonomiyaki, dan Ramen dari tenant terpilih.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUNDOWN SECTION (Lengkap) -->
+  <section id="schedule">
+    <div class="title">
+      <h2>Rundown Acara</h2>
+      <p>Catat jadwalnya agar kamu tidak melewatkan penampilan Guest Star favoritmu!</p>
+    </div>
+
+    <div class="schedule">
+      <div class="schedule-item">
+        <span><strong>13.00 - 13.30</strong></span>
+        <span>🎉 <strong>Open Gate & Music Start</strong> (Penukaran Tiket)</span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>13.30 - 14.30</strong></span>
+        <span>🎤 <strong>Community Stage</strong> (Karaoke & Showcase)</span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>14.30 - 15.30</strong></span>
+        <span>💃 <strong>Random Play Dance</strong> (Main Atrium)</span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>15.30 - 16.30</strong></span>
+        <span>✨ <strong>Cosplay Walk & Parade</strong></span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>16.30 - 17.30</strong></span>
+        <span>🎸 <strong>Local Band Performance</strong></span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>17.30 - 18.30</strong></span>
+        <span>☕ <strong>Maghrib Break</strong> (Rest & Food Area)</span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>18.30 - 19.30</strong></span>
+        <span>🌟 <strong>MAIN GUEST STAR PERFORMANCE</strong></span>
+      </div>
+
+      <div class="schedule-item">
+        <span><strong>19.30 - 20.00</strong></span>
+        <span>🎊 <strong>Grand Finale & DJ Set</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKET SECTION (Updated) -->
+  <section id="ticket">
+    <!-- Bagian HTML -->
+<section id="ticket">
+  <div class="title">
+    <h2>🎫 Kategori Tiket</h2>
+    <p>Pilih paket tiket yang sesuai untuk pengalaman terbaik di NEROKU FEST.</p>
+  </div>
+
+  <div class="ticket-container">
+    <!-- Regular Ticket -->
+    <div class="ticket">
+      <div>
+        <h3>REGULAR</h3>
+        <div class="price">Rp 25.000</div>
+        <ul>
+          <li>Tiket Masuk (1 Orang)</li>
+          <li>Akses Seluruh Area Event</li>
+          <li>Official Sticker Pack</li>
+          <li>Akses Komunitas & Booth</li>
+        </ul>
+      </div>
+      <a href="https://wa.me/6288224454894" class="btn">BELI REGULAR</a>
+    </div>
+
+    <!-- Bundle Ticket -->
+    <div class="ticket bundle-highlight">
+      <div>
+        <div style="background:#ff4fd8; color:white; padding:5px 15px; border-radius:50px; font-size:12px; display:inline-block; margin-bottom:15px; font-weight:bold;">BEST VALUE</div>
+        <h3>MCD BUNDLE</h3>
+        <div class="price">Rp 46.000</div>
+        <p style="color: #bbb; font-size: 14px; margin-top: -15px; margin-bottom: 15px;">(Tiket 25k + McD 21k)</p>
+        <ul>
+          <li>Semua Benefit Regular</li>
+          <li>Paket Makan McD (Meal + Drink)</li>
+          <li>Fast Track Entry (Tanpa Antre)</li>
+          <li>Kupon Undian Doorprise</li>
+        </ul>
+      </div>
+      <a href="https://wa.me/6288224454894" class="btn">BELI BUNDLE</a>
+    </div>
+  </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <h3>🤝 COLLABORATE WITH US</h3>
+      <p>Instagram: @nerokufest</p>
+      <p>Location: BEC Mall, Bandung</p>
+      <br>
+      <a href="https://instagram.com/nerokufest" class="btn">FOLLOW INSTAGRAM</a>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 NEROKU FEST — All Rights Reserved ✨
+  </footer>
+
+  <script>
+    const eventDate = new Date('June 14, 2026 13:00:00').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+
+      if (distance < 0) {
+        document.getElementById('countdown').innerHTML = "<h3>🎉 EVENT TELAH DIMULAI!</h3>";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerText = days.toString().padStart(2, '0');
+      document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
