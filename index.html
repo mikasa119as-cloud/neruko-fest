@@ -18,6 +18,56 @@
       font-family:'Poppins',sans-serif;
     }
 
+    /* Overlay untuk memicu musik */
+    #music-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(13, 13, 22, 0.98);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: 0.5s;
+    }
+    .start-btn {
+      padding: 20px 40px;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(45deg, #ff4fd8, #8b5cf6);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 79, 216, 0.5);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Music Toggle Button */
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      background: rgba(255, 79, 216, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 0 15px rgba(255, 79, 216, 0.5);
+    }
+
     body {
       background: #0d0d16;
       color: white;
@@ -180,16 +230,19 @@
 </head>
 <body>
 
-  <nav>
-    <h2>NEROKU FEST</h2>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#schedule">Rundown</a></li>
-      <li><a href="#ticket">Ticket</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
 
+<!-- MP3 Audio Element -->
+<audio id="myAudio" loop>
+  <source src="lagu.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- Overlay Tetap Ada Karena Wajib untuk Memancing Klik User -->
+<div id="music-overlay">
+  <h2 style="margin-bottom: 20px; text-align: center; letter-spacing: 2px;">NEROKU FEST 2026</h2>
+  <button class="start-btn" onclick="startExperience()">lets go neruko fest !!!</button>
+  <p style="margin-top: 15px; color: #888; font-size: 12px; font-style: italic;">Now Playing: FLOW - GO!!!</p>
+</div>
   <header>
     <div class="hero">
       <h1>NEROKU FEST 2026</h1>
@@ -265,7 +318,6 @@
           <ul>
             <li>Tiket Masuk</li>
             <li>Akses Seluruh Area</li>
-            <li>Official Sticker</li>
           </ul>
         </div>
         <a href="https://wa.me/6288224454894" class="btn">BELI REGULAR</a>
@@ -278,8 +330,8 @@
           <div class="price">Rp 46k</div>
           <ul>
             <li>Semua Benefit Regular</li>
-            <li>Paket Makan McD</li>
-            <li>Fast Track Entry</li>
+            <li>Paket Makan McDonald </li>
+
           </ul>
         </div>
         <a href="https://wa.me/6288224454894" class="btn">BELI BUNDLE</a>
@@ -290,7 +342,7 @@
   <section id="contact">
     <div class="contact">
       <h3>🤝 COLLABORATE</h3>
-      <p style="margin: 10px 0;">Instagram: @nerokufest | BEC Mall, Bandung</p>
+      <p style="margin: 10px 0;">Instagram: @nerokufest | YOGYA KEPATIHAN , Bandung</p>
       <a href="https://instagram.com/nerokufest" class="btn">FOLLOW INSTAGRAM</a>
     </div>
   </section>
@@ -324,6 +376,27 @@
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+  function startExperience() {
+  const audio = document.getElementById('myAudio');
+  const overlay = document.getElementById('music-overlay');
+
+  // 1. Jalankan Musik
+  audio.play().then(() => {
+    console.log("Fighting Dreamers!");
+    audio.volume = 0.6; // Set volume 60%
+  }).catch(error => {
+    console.log("Playback dicegah browser:", error);
+  });
+
+  // 2. Hilangkan Overlay dengan Efek Fade Out
+  overlay.style.opacity = '0';
+  overlay.style.pointerEvents = 'none'; // Agar tidak menghalangi klik setelah hilang
+  
+  setTimeout(() => {
+    overlay.style.display = 'none';
+  }, 500);
+}
   </script>
 </body>
 </html>
