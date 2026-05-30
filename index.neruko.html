@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEROKU FEST 2026 — Cyber Neon Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --neon-pink: #ff2d78;
+      --neon-blue: #00d4ff;
+      --neon-purple: #b700ff;
+      --neon-yellow: #ffe600;
+      --bg-dark: #060612;
+      --bg-mid: #0d0b1a;
+      --bg-card: rgba(255,255,255,0.03);
+      --border-glow: rgba(255,45,120,0.25);
+      --font-display: 'Orbitron', monospace;
+      --font-jp: 'Noto Sans JP', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    ::selection { background: rgba(183,0,255,0.35); color:#fff; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--neon-pink), var(--neon-purple)); border-radius:10px; }
+
+    body {
+      background: var(--bg-dark);
+      color: #e8e0ff;
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* ========== CANVAS PARTICLES ========== */
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ========== SAKURA LAYER ========== */
+    .sakura-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .sakura {
+      position: absolute;
+      top: -20px;
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, #ffb7c5, #ff6fa8);
+      border-radius: 50% 0 50% 0;
+      opacity: 0;
+      animation: sakuraFall linear infinite;
+      filter: drop-shadow(0 0 3px rgba(255,100,160,0.6));
+    }
+
+    @keyframes sakuraFall {
+      0%   { opacity:0; transform: translateY(-20px) rotate(0deg); }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.6; }
+      100% { opacity:0; transform: translateY(110vh) rotate(720deg) translateX(80px); }
+    }
+
+    /* ========== MUSIC OVERLAY ========== */
+    #music-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-dark);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+
+    #music-overlay .overlay-kanji {
+      font-family: var(--font-jp);
+      font-size: clamp(60px, 12vw, 120px);
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px rgba(255,45,120,0.7));
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%,100% { filter: drop-shadow(0 0 20px rgba(255,45,120,0.6)); }
+      50%      { filter: drop-shadow(0 0 50px rgba(183,0,255,0.9)); }
+    }
+
+    #music-overlay h1 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 5vw, 48px);
+      letter-spacing: 8px;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #music-overlay p {
+      color: #666;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .btn-enter {
+      padding: 18px 60px;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: all 0.4s;
+      box-shadow: 0 0 30px rgba(255,45,120,0.5), 0 0 60px rgba(183,0,255,0.3);
+      text-transform: uppercase;
+    }
+
+    .btn-enter:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 60px rgba(255,45,120,0.8), 0 0 100px rgba(183,0,255,0.5);
+    }
+
+    /* Scanlines effect on overlay */
+    #music-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ========== NAV ========== */
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 16px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(6,6,18,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,45,120,0.15);
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .nav-logo span:first-child {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-logo span:last-child {
+      font-family: var(--font-jp);
+      font-size: 10px;
+      color: #554;
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 28px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: #aaa;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: 0.3s;
+      text-transform: uppercase;
+    }
+
+    nav ul li a:hover {
+      color: var(--neon-pink);
+      text-shadow: 0 0 12px var(--neon-pink);
+    }
+
+    .nav-ticket-btn {
+      padding: 8px 22px;
+      border: 1px solid var(--neon-pink);
+      border-radius: 20px;
+      color: var(--neon-pink) !important;
+      transition: all 0.3s !important;
+    }
+
+    .nav-ticket-btn:hover {
+      background: var(--neon-pink) !important;
+      color: #fff !important;
+      box-shadow: 0 0 20px rgba(255,45,120,0.5);
+    }
+
+    /* ========== HERO ========== */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 10% 60px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .hero-bg-rings {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid;
+      opacity: 0.12;
+      animation: ringPulse 4s ease-in-out infinite;
+    }
+
+    .ring:nth-child(1) { width:300px; height:300px; border-color: var(--neon-pink); animation-delay:0s; }
+    .ring:nth-child(2) { width:550px; height:550px; border-color: var(--neon-purple); animation-delay:0.8s; }
+    .ring:nth-child(3) { width:800px; height:800px; border-color: var(--neon-blue); animation-delay:1.6s; }
+    .ring:nth-child(4) { width:1050px; height:1050px; border-color: var(--neon-pink); animation-delay:2.4s; }
+
+    @keyframes ringPulse {
+      0%,100% { transform: scale(1); opacity:0.12; }
+      50%      { transform: scale(1.04); opacity:0.22; }
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-eyebrow {
+      font-family: var(--font-jp);
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: var(--neon-pink);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 12vw, 120px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #fff 0%, var(--neon-pink) 40%, var(--neon-purple) 70%, var(--neon-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 40px rgba(255,45,120,0.5));
+      animation: heroGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes heroGlow {
+      0%,100% { filter: drop-shadow(0 0 30px rgba(255,45,120,0.4)); }
+      50%      { filter: drop-shadow(0 0 60px rgba(183,0,255,0.7)); }
+    }
+
+    .hero-jp-title {
+      font-family: var(--font-jp);
+      font-size: clamp(14px, 3vw, 22px);
+      color: rgba(255,255,255,0.35);
+      margin-top: 8px;
+      letter-spacing: 4px;
+    }
+
+    .hero-sub {
+      margin: 24px auto 0;
+      max-width: 580px;
+      color: #998;
+      font-size: 16px;
+      font-family: var(--font-jp);
+      line-height: 1.8;
+    }
+
+    /* ========== COUNTDOWN ========== */
+    .countdown-wrap {
+      margin: 40px auto 0;
+      max-width: 520px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,45,120,0.2);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 40px rgba(255,45,120,0.08), inset 0 0 30px rgba(183,0,255,0.05);
+    }
+
+    .countdown-label {
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .countdown-timer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .time-block {
+      text-align: center;
+      flex: 1;
+    }
+
+    .time-block .num {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 58px);
+      font-weight: 900;
+      color: var(--neon-blue);
+      text-shadow: 0 0 20px var(--neon-blue), 0 0 40px rgba(0,212,255,0.3);
+      line-height: 1;
+      display: block;
+    }
+
+    .time-block .lbl {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #555;
+      text-transform: uppercase;
+      margin-top: 6px;
+      display: block;
+      font-family: var(--font-display);
+    }
+
+    .time-sep {
+      font-size: 40px;
+      color: rgba(255,45,120,0.4);
+      align-self: center;
+      font-family: var(--font-display);
+      padding-bottom: 10px;
+    }
+
+    .hero-cta {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      border-radius: 50px;
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255,45,120,0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 50px rgba(255,45,120,0.7), 0 0 80px rgba(183,0,255,0.4);
+      transform: translateY(-3px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--neon-blue);
+      border: 1px solid rgba(0,212,255,0.4);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0,212,255,0.3);
+      transform: translateY(-3px);
+    }
+
+    /* ========== SECTION BASE ========== */
+    section { position: relative; z-index: 2; padding: 100px 8%; }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    .section-title .jp-label {
+      font-family: var(--font-jp);
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff, var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .section-title p {
+      color: #665;
+      font-size: 15px;
+      margin-top: 10px;
+      font-family: var(--font-jp);
+    }
+
+    /* ========== DIVIDER ========== */
+    .neon-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--neon-purple), transparent);
+      opacity: 0.3;
+      margin: 0 8%;
+    }
+
+    /* ========== ABOUT / PILLARS ========== */
+    #about { background: linear-gradient(180deg, transparent, rgba(183,0,255,0.05), transparent); }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .pillar-card {
+      position: relative;
+      padding: 40px 30px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      transition: all 0.4s;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,45,120,0.1), rgba(183,0,255,0.05));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .pillar-card:hover { 
+      border-color: rgba(255,45,120,0.3);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(255,45,120,0.1);
+    }
+
+    .pillar-card:hover::before { opacity: 1; }
+
+    .pillar-number {
+      font-family: var(--font-display);
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255,45,120,0.07);
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .pillar-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .pillar-card h3 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .pillar-jp {
+      font-family: var(--font-jp);
+      font-size: 12px;
+      color: #444;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .pillar-card p {
+      color: #887;
+      font-size: 15px;
+      font-family: var(--font-jp);
+      line-height: 1.8;
+    }
+
+    /* ========== GUEST STAR - NEW! ========== */
+    #gueststar {
+      background: linear-gradient(180deg, transparent, rgba(0,212,255,0.04), transparent);
+    }
+
+    .gs-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .gs-card {
+      position: relative;
+      width: 280px;
+      height: 360px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: all 0.4s;
+      flex-shrink: 0;
+    }
+
+    .gs-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(183,0,255,0.3);
+      border-color: rgba(183,0,255,0.4);
+    }
+
+    .gs-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 100px;
+      background: linear-gradient(160deg, rgba(20,10,40,1), rgba(60,0,80,0.8));
+    }
+
+    .gs-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(6,6,18,0.97) 0%, rgba(6,6,18,0.2) 60%, transparent 100%);
+    }
+
+    .gs-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px;
+    }
+
+    .gs-type {
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .gs-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .gs-name-jp {
+      font-family: var(--font-jp);
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .gs-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      background: rgba(183,0,255,0.15);
+      border: 1px solid rgba(183,0,255,0.3);
+      font-size: 11px;
+      color: #c57aff;
+      font-family: var(--font-display);
+    }
+
+    .gs-tba {
+      opacity: 0.5;
+    }
+
+    .gs-tba .gs-bg {
+      background: linear-gradient(160deg, rgba(15,15,25,1), rgba(30,20,50,0.8));
+      filter: grayscale(0.5);
+    }
+
+    /* ========== SCHEDULE ========== */
+    .schedule-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .schedule-date-header {
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--neon-pink);
+      text-align: center;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+    }
+
+    .schedule-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      align-items: center;
+      padding: 22px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: all 0.3s;
+      gap: 20px;
+      cursor: default;
+    }
+
+    .schedule-item:first-of-type { border-radius: 16px 16px 0 0; }
+    .schedule-item:last-of-type  { border-radius: 0 0 16px 16px; border-bottom: none; }
+
+    .schedule-item:hover {
+      background: rgba(255,45,120,0.04);
+      padding-left: 36px;
+    }
+
+    .sch-time {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--neon-blue);
+      text-shadow: 0 0 12px rgba(0,212,255,0.4);
+    }
+
+    .sch-content {}
+    .sch-content strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #ddd;
+      text-transform: uppercase;
+    }
+
+    .sch-content span {
+      font-family: var(--font-jp);
+      font-size: 13px;
+      color: #556;
+    }
+
+    .sch-badge {
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge-main    { background: rgba(255,45,120,0.15); color: var(--neon-pink); border: 1px solid rgba(255,45,120,0.3); }
+    .badge-dance   { background: rgba(183,0,255,0.15); color: #c57aff; border: 1px solid rgba(183,0,255,0.3); }
+    .badge-market  { background: rgba(0,212,255,0.1); color: var(--neon-blue); border: 1px solid rgba(0,212,255,0.25); }
+    .badge-special { background: rgba(255,230,0,0.1); color: var(--neon-yellow); border: 1px solid rgba(255,230,0,0.3); }
+    .badge-open    { background: rgba(100,255,100,0.1); color: #77ff99; border: 1px solid rgba(100,255,100,0.25); }
+
+    /* ========== ANIME QUIZ MINIGAME - NEW! ========== */
+    #quiz { background: linear-gradient(180deg, transparent, rgba(255,45,120,0.04), transparent); }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,45,120,0.15);
+      border-radius: 24px;
+      padding: 50px 40px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-container::before {
+      content: '?';
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 300px;
+      font-weight: 900;
+      color: rgba(183,0,255,0.03);
+      top: -60px;
+      right: -30px;
+      pointer-events: none;
+    }
+
+    .quiz-progress {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .quiz-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
+    }
+
+    .quiz-dot.active { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); border-color: var(--neon-pink); }
+    .quiz-dot.done   { background: rgba(0,212,255,0.5); border-color: var(--neon-blue); }
+
+    #quiz-question {
+      font-family: var(--font-jp);
+      font-size: clamp(16px, 3vw, 22px);
+      color: #ddd;
+      margin-bottom: 36px;
+      min-height: 60px;
+      line-height: 1.6;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .quiz-opt {
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      color: #bbb;
+      font-family: var(--font-jp);
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: left;
+    }
+
+    .quiz-opt:hover:not(:disabled) {
+      border-color: rgba(183,0,255,0.4);
+      background: rgba(183,0,255,0.08);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .quiz-opt.correct {
+      border-color: rgba(100,255,100,0.6);
+      background: rgba(50,200,50,0.1);
+      color: #77ff99;
+    }
+
+    .quiz-opt.wrong {
+      border-color: rgba(255,50,50,0.5);
+      background: rgba(200,20,20,0.1);
+      color: #ff8080;
+    }
+
+    .quiz-opt:disabled { cursor: not-allowed; }
+
+    #quiz-feedback {
+      min-height: 24px;
+      font-family: var(--font-jp);
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 16px;
+    }
+
+    #quiz-score {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: var(--neon-pink);
+      letter-spacing: 2px;
+    }
+
+    .quiz-result {
+      font-family: var(--font-jp);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    /* ========== TICKETS ========== */
+    .ticket-grid {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .ticket-card {
+      width: 320px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.4s;
+    }
+
+    .ticket-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    .ticket-header {
+      padding: 36px 32px 24px;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      position: relative;
+    }
+
+    .ticket-badge-fav {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .ticket-type {
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: #556;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .ticket-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .ticket-price {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .price-regular { color: var(--neon-blue); text-shadow: 0 0 20px rgba(0,212,255,0.4); }
+    .price-bundle  { color: var(--neon-pink); text-shadow: 0 0 20px rgba(255,45,120,0.4); }
+
+    .ticket-price-sub {
+      font-family: var(--font-jp);
+      font-size: 12px;
+      color: #444;
+      margin-top: 4px;
+    }
+
+    .ticket-body {
+      padding: 24px 32px 32px;
+    }
+
+    .ticket-feat {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .ticket-feat li {
+      font-family: var(--font-jp);
+      font-size: 14px;
+      color: #778;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ticket-feat li::before {
+      content: '✦';
+      color: var(--neon-pink);
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .ticket-feat li.highlight { color: #bbb; }
+
+    .ticket-featured {
+      border-color: rgba(255,45,120,0.25);
+      box-shadow: 0 0 40px rgba(255,45,120,0.08), inset 0 0 30px rgba(255,45,120,0.03);
+    }
+
+    /* Ticket perforated holes */
+    .ticket-holes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin: 0;
+    }
+
+    .hole-left, .hole-right {
+      width: 20px; height: 20px;
+      background: var(--bg-dark);
+      border-radius: 50%;
+    }
+
+    .ticket-dash {
+      flex: 1;
+      border-top: 1px dashed rgba(255,255,255,0.06);
+      margin: 0 5px;
+    }
+
+    /* ========== INSTAGRAM ========== */
+    .ig-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .ig-item {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .ig-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: 0.4s;
+      filter: saturate(0.8) brightness(0.9);
+    }
+
+    .ig-item:hover img { transform: scale(1.1); filter: saturate(1.2) brightness(0.7); }
+
+    .ig-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,45,120,0.6), rgba(183,0,255,0.6));
+      opacity: 0;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #fff;
+    }
+
+    .ig-item:hover .ig-overlay { opacity: 1; }
+
+    /* ========== LOCATION ========== */
+    .venue-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 50px;
+    }
+
+    .venue-info {}
+
+    .venue-tag {
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--neon-blue);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .venue-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .venue-name-jp {
+      font-family: var(--font-jp);
+      font-size: 14px;
+      color: #445;
+      margin-bottom: 20px;
+    }
+
+    .venue-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .venue-detail-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .venue-detail-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .venue-detail-text strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--neon-blue);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .venue-detail-text span {
+      font-family: var(--font-jp);
+      font-size: 14px;
+      color: #667;
+    }
+
+    .map-frame {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      height: 300px;
+    }
+
+    .map-frame iframe {
+      width: 100%; height: 100%;
+      border: none;
+      filter: grayscale(1) invert(0.85) opacity(0.75);
+    }
+
+    /* ========== ANIME CHARACTER DECORATION ========== */
+    .anime-char-deco {
+      position: fixed;
+      bottom: 0;
+      right: -10px;
+      width: 200px;
+      height: 300px;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.7;
+      animation: charFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes charFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+
+    .anime-char-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ========== MUSIC PLAYER - NEW! ========== */
+    #player-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      gap: 16px;
+      background: rgba(10,8,20,0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,45,120,0.2);
+      border-radius: 50px;
+      padding: 12px 24px;
+      box-shadow: 0 0 40px rgba(255,45,120,0.15);
+      min-width: 300px;
+    }
+
+    .player-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,45,120,0.3);
+      background: rgba(255,45,120,0.1);
+      color: var(--neon-pink);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .player-btn:hover { background: rgba(255,45,120,0.25); box-shadow: 0 0 15px rgba(255,45,120,0.3); }
+
+    .player-info {
+      flex: 1;
+      text-align: center;
+    }
+
+    .player-title {
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #fff;
+      display: block;
+    }
+
+    .player-artist {
+      font-family: var(--font-jp);
+      font-size: 11px;
+      color: #555;
+    }
+
+    .player-vol {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .player-vol span { font-size: 12px; color: #555; }
+
+    .vol-slider {
+      width: 60px;
+      height: 3px;
+      -webkit-appearance: none;
+      background: linear-gradient(90deg, var(--neon-pink) var(--val, 50%), rgba(255,255,255,0.1) var(--val, 50%));
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--neon-pink);
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--neon-pink);
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 60px 8% 80px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .footer-jp {
+      font-family: var(--font-jp);
+      font-size: 13px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .footer-links a {
+      color: #445;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--neon-pink); }
+
+    .footer-copy {
+      color: #333;
+      font-family: var(--font-jp);
+      font-size: 12px;
+    }
+
+    /* ========== SCROLL TO TOP BTN ========== */
+    #scroll-top {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 500;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,45,120,0.15);
+      border: 1px solid rgba(255,45,120,0.3);
+      color: var(--neon-pink);
+      font-size: 18px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    #scroll-top:hover { background: rgba(255,45,120,0.3); box-shadow: 0 0 20px rgba(255,45,120,0.3); }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      nav ul { display: none; }
+      .venue-grid { grid-template-columns: 1fr; padding: 30px; }
+      .quiz-options { grid-template-columns: 1fr; }
+      .anime-char-deco { width: 120px; bottom: 60px; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .ticket-card { width: 100%; max-width: 340px; }
+      .gs-card { width: 240px; height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- SAKURA -->
+<div class="sakura-container" id="sakuraContainer"></div>
+
+<!-- AUDIO -->
+<audio id="myAudio" loop>
+  <source src="lagu.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO OVERLAY -->
+<div id="music-overlay">
+  <div class="overlay-kanji">ネロク</div>
+  <h1>NEROKU FEST</h1>
+  <p>2026 · Cyber Neon Experience · Bandung</p>
+  <button class="btn-enter" onclick="startExperience()">✦ Masuk Area Festival ✦</button>
+  <p style="margin-top:12px; font-size:11px; letter-spacing:2px; color:#333; font-family:'Noto Sans JP',sans-serif;">BGM: FLOW — GO!!!</p>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span>NEROKU FEST</span>
+    <span>ネロク・フェスト 2026</span>
+  </div>
+  <ul>
+    <li><a href="#about">Info</a></li>
+    <li><a href="#gueststar">Guest Star</a></li>
+    <li><a href="#schedule">Rundown</a></li>
+    <li><a href="#quiz">Kuis Anime</a></li>
+    <li><a href="#ticket">Tiket</a></li>
+    <li><a href="#location">Lokasi</a></li>
+    <li><a href="https://wa.me/6288224454894" class="nav-ticket-btn">Beli Tiket</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header>
+  <div class="hero-bg-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow" data-aos="fade-down">✦ 14 Juni 2026 · Bandung ✦</p>
+    <h1 class="hero-title" data-aos="zoom-in" data-aos-duration="1200">NEROKU<br>FEST</h1>
+    <p class="hero-jp-title" data-aos="fade-up" data-aos-delay="200">ネロク・フェスト — サイバーネオン体験</p>
+    <p class="hero-sub" data-aos="fade-up" data-aos-delay="400">
+      Pengalaman Budaya Pop Jepang Paling Energik di Bandung.<br>
+      音楽、ダンス、クリエイティビティ — 無限の可能性
+    </p>
+
+    <div class="countdown-wrap" data-aos="fade-up" data-aos-delay="500">
+      <div class="countdown-label">Menuju Gerbang Neroku — 時間まであと</div>
+      <div class="countdown-timer">
+        <div class="time-block"><span class="num" id="days">00</span><span class="lbl">Hari</span></div>
+        <div class="time-sep">:</div>
+        <div class="time-block"><span class="num" id="hours">00</span><span class="lbl">Jam</span></div>
+        <div class="time-sep">:</div>
+        <div class="time-block"><span class="num" id="minutes">00</span><span class="lbl">Menit</span></div>
+        <div class="time-sep">:</div>
+        <div class="time-block"><span class="num" id="seconds">00</span><span class="lbl">Detik</span></div>
+      </div>
+    </div>
+
+    <div class="hero-cta" data-aos="fade-up" data-aos-delay="700">
+      <a href="#ticket" class="btn btn-primary">✦ Amankan Tiketmu</a>
+      <a href="#schedule" class="btn btn-outline">Lihat Rundown →</a>
+    </div>
+  </div>
+</header>
+
+<div class="neon-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Universe Neroku — ユニバース</span>
+    <h2>Dunia Neroku</h2>
+    <p>Empat pilar keseruan yang menantimu di Yogya Kepatihan, Lantai 5.</p>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-card" data-aos="fade-right" data-aos-delay="100">
+      <span class="pillar-number">01</span>
+      <span class="pillar-icon">🎤</span>
+      <h3>Anisong</h3>
+      <span class="pillar-jp">アニソン — Lomba Karaoke</span>
+      <p>Suarakan jiwamu dalam kompetisi karaoke lagu Anime terbesar musim ini. Bawa energi terbaikmu ke panggung!</p>
+    </div>
+    <div class="pillar-card" data-aos="fade-right" data-aos-delay="200">
+      <span class="pillar-number">02</span>
+      <span class="pillar-icon">⭐</span>
+      <h3>Performance</h3>
+      <span class="pillar-jp">パフォーマンス — Panggung Utama</span>
+      <p>Panggung utama yang diguncang oleh Idol Group nasional dan J-Pop lokal terbaik Bandung.</p>
+    </div>
+    <div class="pillar-card" data-aos="fade-left" data-aos-delay="100">
+      <span class="pillar-number">03</span>
+      <span class="pillar-icon">💃</span>
+      <h3>Dance Battle</h3>
+      <span class="pillar-jp">ダンス — Random Play Dance</span>
+      <p>Lepaskan energimu di area Random Play Dance dengan playlist Jepang terpanas. Siapa yang paling hafal?</p>
+    </div>
+    <div class="pillar-card" data-aos="fade-left" data-aos-delay="200">
+      <span class="pillar-number">04</span>
+      <span class="pillar-icon">🛍️</span>
+      <h3>Otaku Market</h3>
+      <span class="pillar-jp">オタクマーケット — Bazaar Anime</span>
+      <p>Lengkapi koleksimu: Merchandise Original, Doujinshi, hingga Action Figure langka edisi terbatas.</p>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- GUEST STAR -->
+<section id="gueststar">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Guest Star — ゲストスター</span>
+    <h2>Bintang Tamu</h2>
+    <p>Penampil spesial yang telah dikonfirmasi hadir.</p>
+  </div>
+  <div class="gs-container">
+    <div class="gs-card" data-aos="fade-up" data-aos-delay="100">
+      <div class="gs-bg">🎤</div>
+      <div class="gs-overlay"></div>
+      <div class="gs-info">
+        <p class="gs-type">Main Performance</p>
+        <p class="gs-name">Idol Group</p>
+        <p class="gs-name-jp">メインパフォーマンス</p>
+        <span class="gs-tag">Panggung Utama</span>
+      </div>
+    </div>
+    <div class="gs-card" data-aos="fade-up" data-aos-delay="200">
+      <div class="gs-bg" style="background:linear-gradient(160deg, rgba(10,5,30,1),rgba(0,40,80,0.8))">🎸</div>
+      <div class="gs-overlay"></div>
+      <div class="gs-info">
+        <p class="gs-type">Local Band</p>
+        <p class="gs-name">J-Rock Band</p>
+        <p class="gs-name-jp">ジェイロックバンド</p>
+        <span class="gs-tag" style="color:#00d4ff;border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.1)">Band Lokal</span>
+      </div>
+    </div>
+    <div class="gs-card gs-tba" data-aos="fade-up" data-aos-delay="300">
+      <div class="gs-bg">❓</div>
+      <div class="gs-overlay"></div>
+      <div class="gs-info">
+        <p class="gs-type">Mystery Guest</p>
+        <p class="gs-name">Coming Soon</p>
+        <p class="gs-name-jp">もうすぐ発表！</p>
+        <span class="gs-tag" style="color:#ffe600;border-color:rgba(255,230,0,0.3);background:rgba(255,230,0,0.08)">Segera Diumumkan</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Rundown — タイムテーブル</span>
+    <h2>Jadwal Acara</h2>
+    <p>Pastikan kamu tidak melewatkan momen ikonik · 14 Juni 2026</p>
+  </div>
+  <div class="schedule-wrap" data-aos="fade-up" data-aos-delay="100">
+    <p class="schedule-date-header">✦ Sabtu · 14 Juni 2026 · Lantai 5 Yogya Kepatihan ✦</p>
+    <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:20px;overflow:hidden;">
+      <div class="schedule-item">
+        <div class="sch-time">13.00</div>
+        <div class="sch-content"><strong>Gate Opens</strong><span>Registrasi · Check-in tiket dibuka</span></div>
+        <span class="sch-badge badge-open">Buka</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">13.30</div>
+        <div class="sch-content"><strong>Otaku Market</strong><span>Stand merch, doujin, & figure dibuka</span></div>
+        <span class="sch-badge badge-market">Market</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">14.30</div>
+        <div class="sch-content"><strong>Random Play Dance</strong><span>ランダムプレイダンス — J-Pop & K-Pop</span></div>
+        <span class="sch-badge badge-dance">Dance</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">15.30</div>
+        <div class="sch-content"><strong>Anisong Karaoke</strong><span>Sesi kompetisi babak penyisihan</span></div>
+        <span class="sch-badge badge-main">Kompetisi</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">16.30</div>
+        <div class="sch-content"><strong>Local Band Show</strong><span>J-Rock & Anime Cover · Full power!</span></div>
+        <span class="sch-badge badge-main">Panggung</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">18.00</div>
+        <div class="sch-content"><strong>Anisong Final</strong><span>Penampilan finalis terpilih</span></div>
+        <span class="sch-badge badge-dance">Final</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">18.30</div>
+        <div class="sch-content"><strong>Main Guest Star</strong><span>★ Penampilan bintang tamu utama ★</span></div>
+        <span class="sch-badge badge-special">★ Main</span>
+      </div>
+      <div class="schedule-item">
+        <div class="sch-time">20.00</div>
+        <div class="sch-content"><strong>Grand Finale</strong><span>終幕 — Penutupan + Surprise Act</span></div>
+        <span class="sch-badge badge-special">★ Finale</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- ANIME QUIZ MINIGAME -->
+<section id="quiz">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Mini Game — アニメクイズ</span>
+    <h2>Kuis Anime</h2>
+    <p>Seberapa dalam pengetahuan anime-mu? Uji di sini!</p>
+  </div>
+  <div class="quiz-container" data-aos="zoom-in">
+    <div class="quiz-progress" id="quizProgress"></div>
+    <p id="quiz-question">Tekan mulai untuk mengikuti kuis!</p>
+    <div class="quiz-options" id="quizOptions"></div>
+    <p id="quiz-feedback"></p>
+    <p id="quiz-score"></p>
+    <button id="quizStartBtn" class="btn btn-primary" onclick="startQuiz()" style="margin-top:10px;">▶ Mulai Kuis</button>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- TICKET -->
+<section id="ticket">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Akses Masuk — チケット</span>
+    <h2>Tiket Festival</h2>
+    <p>Pilih paket pengalaman terbaikmu. Stok terbatas!</p>
+  </div>
+  <div class="ticket-grid">
+
+    <div class="ticket-card" data-aos="flip-left" data-aos-delay="100">
+      <div class="ticket-header">
+        <p class="ticket-type">Pass Masuk</p>
+        <p class="ticket-name">Regular Pass</p>
+        <div class="ticket-price price-regular">Rp 25k</div>
+        <p class="ticket-price-sub">Dua puluh lima ribu rupiah</p>
+      </div>
+      <div class="ticket-holes">
+        <div class="hole-left"></div>
+        <div class="ticket-dash"></div>
+        <div class="hole-right"></div>
+      </div>
+      <div class="ticket-body">
+        <ul class="ticket-feat">
+          <li class="highlight">Akses penuh seluruh area festival</li>
+          <li>Nonton semua penampilan panggung</li>
+          <li>Akses Otaku Market</li>
+          <li>Ikut Random Play Dance</li>
+          <li>Ikut Lomba Karaoke Anisong</li>
+        </ul>
+        <a href="https://wa.me/6288224454894" class="btn btn-outline" style="width:100%;text-align:center;display:block;">Beli Pass Regular</a>
+      </div>
+    </div>
+
+    <div class="ticket-card ticket-featured" data-aos="flip-right" data-aos-delay="200">
+      <div class="ticket-header">
+        <span class="ticket-badge-fav">Favorit ✦</span>
+        <p class="ticket-type">Bundle Hemat</p>
+        <p class="ticket-name">MCD Bundle</p>
+        <div class="ticket-price price-bundle">Rp 46k</div>
+        <p class="ticket-price-sub">Empat puluh enam ribu rupiah</p>
+      </div>
+      <div class="ticket-holes">
+        <div class="hole-left"></div>
+        <div class="ticket-dash"></div>
+        <div class="hole-right"></div>
+      </div>
+      <div class="ticket-body">
+        <ul class="ticket-feat">
+          <li class="highlight">Semua benefit Pass Regular</li>
+          <li class="highlight">Paket Makan McDonald's Hemat</li>
+          <li>Makan praktis, nonton makin seru</li>
+          <li>Akses prioritas area festival</li>
+          <li>Cocok buat kamu yang full day!</li>
+        </ul>
+        <a href="https://wa.me/6288224454894" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Ambil MCD Bundle</a>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="text-align:center; margin-top:30px; color:#444; font-family:'Noto Sans JP',sans-serif; font-size:13px;">
+    Pertanyaan? Hubungi kami via WhatsApp · 
+    <a href="https://wa.me/6288224454894" style="color:var(--neon-pink); text-decoration:none;">+62 882-2445-4894</a>
+  </p>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- INSTAGRAM -->
+<section id="instagram">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Instagram Feed — インスタグラム</span>
+    <h2>Stay Updated</h2>
+    <p>Follow kami di <a href="https://www.instagram.com/nerokufest" target="_blank" style="color:var(--neon-pink);text-decoration:none;font-weight:700;">@nerokufest</a> untuk update terbaru!</p>
+  </div>
+  <div class="ig-grid">
+    <div class="ig-item" data-aos="zoom-in" data-aos-delay="100">
+      <a href="https://www.instagram.com/p/DYJL8k7CcAp/" target="_blank">
+        <img src="https://www.instagram.com/p/DYJL8k7CcAp/media/?size=l"
+             onerror="this.parentElement.parentElement.style.background='linear-gradient(135deg,rgba(255,45,120,0.1),rgba(183,0,255,0.1))'; this.style.display='none'">
+        <div class="ig-overlay">VIEW POST</div>
+      </a>
+    </div>
+    <div class="ig-item" data-aos="zoom-in" data-aos-delay="150" style="background:linear-gradient(135deg,rgba(20,10,40,1),rgba(60,0,80,0.8));display:flex;align-items:center;justify-content:center;">
+      <a href="https://www.instagram.com/nerokufest" target="_blank" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;text-decoration:none;">
+        <span style="font-size:36px;">🌸</span>
+        <span style="font-family:var(--font-display);font-size:9px;letter-spacing:2px;color:#ff2d78;">@nerokufest</span>
+        <div class="ig-overlay">FOLLOW US</div>
+      </a>
+    </div>
+    <div class="ig-item" data-aos="zoom-in" data-aos-delay="200" style="background:linear-gradient(135deg,rgba(0,20,40,1),rgba(0,60,80,0.8));display:flex;align-items:center;justify-content:center;">
+      <a href="https://www.instagram.com/nerokufest" target="_blank" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;text-decoration:none;">
+        <span style="font-size:36px;">🎌</span>
+        <span style="font-family:var(--font-display);font-size:9px;letter-spacing:2px;color:#00d4ff;">MORE UPDATES</span>
+        <div class="ig-overlay">INSTAGRAM</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- LOCATION -->
+<section id="location">
+  <div class="section-title" data-aos="fade-up">
+    <span class="jp-label">Lokasi — 場所</span>
+    <h2>Titik Temu</h2>
+    <p>Pusat energi Neroku di kota Bandung · バンドン</p>
+  </div>
+  <div class="venue-grid" data-aos="zoom-in-up">
+    <div class="venue-info">
+      <span class="venue-tag">Venue Utama · メインベニュー</span>
+      <h3 class="venue-name">Yogya Kepatihan</h3>
+      <p class="venue-name-jp">ヨギャ・クパティアン</p>
+      <div class="venue-detail">
+        <div class="venue-detail-row">
+          <div class="venue-detail-icon">📍</div>
+          <div class="venue-detail-text">
+            <strong>Alamat</strong>
+            <span>Jl. Kepatihan No.11-17, Kota Bandung</span>
+          </div>
+        </div>
+        <div class="venue-detail-row">
+          <div class="venue-detail-icon">🏢</div>
+          <div class="venue-detail-text">
+            <strong>Lantai</strong>
+            <span>Lantai 5 — Area Food Court & Game Master</span>
+          </div>
+        </div>
+        <div class="venue-detail-row">
+          <div class="venue-detail-icon">🕐</div>
+          <div class="venue-detail-text">
+            <strong>Waktu</strong>
+            <span>13.00 — 20.30 WIB · 14 Juni 2026</span>
+          </div>
+        </div>
+        <div class="venue-detail-row">
+          <div class="venue-detail-icon">🚌</div>
+          <div class="venue-detail-text">
+            <strong>Akses</strong>
+            <span>Dekat Alun-alun Bandung · Tersedia parkir</span>
+          </div>
+        </div>
+      </div>
+      <a href="https://maps.app.goo.gl/eujdXFXu2TtGLH7r7" target="_blank" class="btn btn-outline">🗺 Buka Google Maps</a>
+    </div>
+    <div class="map-frame">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7228150367555!2d107.60323567475709!3d-6.923700893076016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e62685abd5f1%3A0xa76aa16e497e86f7!2sYOGYA%20%E2%80%A2%20Grand%20Kepatihan!5e0!3m2!1sen!2sid!4v1778761182108!5m2!1sen!2sid"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NEROKU FEST</div>
+  <p class="footer-jp">ネロク・フェスト — サイバーネオン体験 2026</p>
+  <div class="footer-links">
+    <a href="#about">Info</a>
+    <a href="#schedule">Rundown</a>
+    <a href="#ticket">Tiket</a>
+    <a href="https://www.instagram.com/nerokufest" target="_blank">Instagram</a>
+    <a href="https://wa.me/6288224454894" target="_blank">WhatsApp</a>
+  </div>
+  <p class="footer-copy">© 2026 NEROKU FEST SYNDICATE — Crafted for the Cyber Neon Experience ✨<br>Bandung, Indonesia 🇮🇩</p>
+</footer>
+
+<!-- ANIME CHARACTER DECO (SVG) -->
+<div class="anime-char-deco">
+  <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" class="anime-char-svg">
+    <defs>
+      <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
+        <stop offset="0%" stop-color="#ffe0cc"/>
+        <stop offset="100%" stop-color="#ffb899"/>
+      </radialGradient>
+      <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff2d78"/>
+        <stop offset="100%" stop-color="#b700ff"/>
+      </linearGradient>
+      <linearGradient id="uniformGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#1a0a2e"/>
+        <stop offset="100%" stop-color="#0d0618"/>
+      </linearGradient>
+      <filter id="glowSVG">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+      </filter>
+    </defs>
+    <!-- Glow aura -->
+    <ellipse cx="100" cy="200" rx="60" ry="20" fill="rgba(255,45,120,0.08)" filter="url(#glowSVG)"/>
+    <!-- Body/uniform -->
+    <path d="M60,160 Q50,180 45,240 Q70,245 100,246 Q130,245 155,240 Q150,180 140,160 Z" fill="url(#uniformGrad)" stroke="rgba(255,45,120,0.3)" stroke-width="1"/>
+    <!-- Uniform accents -->
+    <path d="M100,160 L100,230" stroke="rgba(255,45,120,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <rect x="80" y="165" width="40" height="3" rx="1" fill="rgba(0,212,255,0.3)"/>
+    <rect x="80" y="175" width="40" height="3" rx="1" fill="rgba(0,212,255,0.2)"/>
+    <!-- Collar -->
+    <path d="M75,160 Q100,170 125,160" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" fill="none"/>
+    <!-- Neck -->
+    <rect x="93" y="130" width="14" height="35" rx="7" fill="url(#skinGrad)"/>
+    <!-- Head -->
+    <ellipse cx="100" cy="115" rx="38" ry="42" fill="url(#skinGrad)"/>
+    <!-- Ears -->
+    <ellipse cx="62" cy="118" rx="7" ry="10" fill="url(#skinGrad)"/>
+    <ellipse cx="138" cy="118" rx="7" ry="10" fill="url(#skinGrad)"/>
+    <!-- Hair base -->
+    <path d="M64,100 Q62,68 100,65 Q138,68 136,100 Q130,80 100,78 Q70,80 64,100 Z" fill="url(#hairGrad)"/>
+    <!-- Hair sides -->
+    <path d="M64,100 Q56,110 58,135 Q65,120 68,110 Z" fill="url(#hairGrad)"/>
+    <path d="M136,100 Q144,110 142,135 Q135,120 132,110 Z" fill="url(#hairGrad)"/>
+    <!-- Hair strands (bangs) -->
+    <path d="M74,96 Q80,112 78,118" stroke="url(#hairGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M88,88 Q90,108 88,116" stroke="url(#hairGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M104,86 Q105,106 104,116" stroke="url(#hairGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M118,88 Q120,108 118,116" stroke="url(#hairGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- Hair ahoge -->
+    <path d="M100,66 Q108,48 106,36" stroke="url(#hairGrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <circle cx="106" cy="33" r="5" fill="#ff2d78" filter="url(#glowSVG)"/>
+    <!-- Eyes -->
+    <ellipse cx="85" cy="116" rx="11" ry="13" fill="#1a0830"/>
+    <ellipse cx="115" cy="116" rx="11" ry="13" fill="#1a0830"/>
+    <!-- Iris -->
+    <ellipse cx="85" cy="117" rx="8" ry="9" fill="#b700ff"/>
+    <ellipse cx="115" cy="117" rx="8" ry="9" fill="#b700ff"/>
+    <!-- Iris glow -->
+    <ellipse cx="85" cy="117" rx="5" ry="6" fill="#e066ff"/>
+    <ellipse cx="115" cy="117" rx="5" ry="6" fill="#e066ff"/>
+    <!-- Pupil -->
+    <ellipse cx="85" cy="118" rx="3" ry="4" fill="#1a0830"/>
+    <ellipse cx="115" cy="118" rx="3" ry="4" fill="#1a0830"/>
+    <!-- Eye shine -->
+    <circle cx="82" cy="113" r="2.5" fill="white" opacity="0.9"/>
+    <circle cx="112" cy="113" r="2.5" fill="white" opacity="0.9"/>
+    <circle cx="87" cy="120" r="1" fill="white" opacity="0.5"/>
+    <circle cx="117" cy="120" r="1" fill="white" opacity="0.5"/>
+    <!-- Eyelashes top -->
+    <path d="M74,110 Q85,104 96,110" stroke="#1a0830" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M104,110 Q115,104 126,110" stroke="#1a0830" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Blush -->
+    <ellipse cx="72" cy="128" rx="9" ry="5" fill="rgba(255,100,150,0.3)"/>
+    <ellipse cx="128" cy="128" rx="9" ry="5" fill="rgba(255,100,150,0.3)"/>
+    <!-- Nose -->
+    <path d="M98,130 Q100,133 102,130" stroke="rgba(180,100,80,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Mouth - smiling -->
+    <path d="M91,138 Q100,145 109,138" stroke="rgba(200,80,100,0.8)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Stars decoration near head -->
+    <text x="40" y="80" font-size="12" fill="rgba(255,45,120,0.5)" font-family="Arial">✦</text>
+    <text x="148" y="90" font-size="10" fill="rgba(0,212,255,0.5)" font-family="Arial">★</text>
+    <text x="30" y="130" font-size="8" fill="rgba(183,0,255,0.4)" font-family="Arial">◆</text>
+    <!-- Arms -->
+    <path d="M60,170 Q40,185 38,210 Q48,210 55,200 Q58,185 68,175 Z" fill="url(#uniformGrad)" stroke="rgba(255,45,120,0.2)" stroke-width="1"/>
+    <path d="M140,170 Q160,185 162,210 Q152,210 145,200 Q142,185 132,175 Z" fill="url(#uniformGrad)" stroke="rgba(255,45,120,0.2)" stroke-width="1"/>
+    <!-- Hands -->
+    <ellipse cx="38" cy="214" rx="9" ry="7" fill="url(#skinGrad)"/>
+    <ellipse cx="162" cy="214" rx="9" ry="7" fill="url(#skinGrad)"/>
+    <!-- Peace sign on right hand -->
+    <path d="M157,210 L160,200 M163,209 L166,199" stroke="url(#skinGrad)" stroke-width="3" stroke-linecap="round"/>
+    <!-- Skirt -->
+    <path d="M55,235 Q45,280 50,295 Q75,300 100,300 Q125,300 150,295 Q155,280 145,235 Z" fill="#1a0830" stroke="rgba(255,45,120,0.2)" stroke-width="1"/>
+    <!-- Skirt accent lines -->
+    <path d="M70,240 Q75,275 72,290" stroke="rgba(255,45,120,0.15)" stroke-width="1"/>
+    <path d="M130,240 Q125,275 128,290" stroke="rgba(255,45,120,0.15)" stroke-width="1"/>
+    <!-- Neon belt -->
+    <rect x="55" y="232" width="90" height="8" rx="4" fill="rgba(255,45,120,0.2)" stroke="rgba(255,45,120,0.4)" stroke-width="0.5"/>
+  </svg>
+</div>
+
+<!-- MUSIC PLAYER BAR -->
+<div id="player-bar">
+  <button class="player-btn" id="playPauseBtn" onclick="togglePlay()" title="Play/Pause">▶</button>
+  <div class="player-info">
+    <span class="player-title">FLOW — GO!!!</span>
+    <span class="player-artist">BGM Neroku Fest 2026</span>
+  </div>
+  <div class="player-vol">
+    <span>🔊</span>
+    <input type="range" class="vol-slider" min="0" max="100" value="50" oninput="setVolume(this.value)" title="Volume">
+  </div>
+</div>
+
+<!-- SCROLL TOP -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Kembali ke atas">↑</button>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+// ===== AOS INIT =====
+AOS.init({ duration: 900, once: true, easing: 'ease-out-cubic' });
+
+// ===== COUNTDOWN =====
+const eventDate = new Date('June 14, 2026 13:00:00').getTime();
+function updateCountdown() {
+  const now = Date.now();
+  const dist = eventDate - now;
+  if (dist < 0) {
+    document.getElementById('countdown') && (document.getElementById('countdown').innerHTML = "<h3 style='color:var(--neon-blue);font-family:var(--font-display);font-size:18px;letter-spacing:2px;'>🎉 FESTIVAL TELAH DIMULAI!</h3>");
+    return;
+  }
+  const d = Math.floor(dist / 86400000);
+  const h = Math.floor((dist % 86400000) / 3600000);
+  const m = Math.floor((dist % 3600000) / 60000);
+  const s = Math.floor((dist % 60000) / 1000);
+  document.getElementById('days').textContent    = String(d).padStart(2,'0');
+  document.getElementById('hours').textContent   = String(h).padStart(2,'0');
+  document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+  document.getElementById('seconds').textContent = String(s).padStart(2,'0');
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ===== MUSIC INTRO =====
+function startExperience() {
+  const audio = document.getElementById('myAudio');
+  audio.play().catch(()=>{});
+  audio.volume = 0.5;
+  const ov = document.getElementById('music-overlay');
+  ov.style.opacity = '0';
+  ov.style.transform = 'scale(1.08)';
+  setTimeout(() => { ov.style.display='none'; }, 1200);
+  document.getElementById('player-bar').style.display = 'flex';
+  document.getElementById('playPauseBtn').textContent = '⏸';
+}
+
+// ===== MUSIC PLAYER =====
+function togglePlay() {
+  const audio = document.getElementById('myAudio');
+  const btn = document.getElementById('playPauseBtn');
+  if (audio.paused) { audio.play(); btn.textContent='⏸'; }
+  else              { audio.pause(); btn.textContent='▶'; }
+}
+function setVolume(v) {
+  document.getElementById('myAudio').volume = v/100;
+  const slider = document.querySelector('.vol-slider');
+  slider.style.setProperty('--val', v+'%');
+}
+
+// ===== SCROLL TOP =====
+const scrollBtn = document.getElementById('scroll-top');
+window.addEventListener('scroll', () => {
+  scrollBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+});
+
+// ===== PARTICLES =====
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.4;
+    this.speedY = (Math.random() - 0.5) * 0.4;
+    this.life = Math.random();
+    this.maxLife = 0.3 + Math.random() * 0.5;
+    const colors = ['rgba(255,45,120', 'rgba(183,0,255', 'rgba(0,212,255', 'rgba(255,230,0'];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.life += 0.003;
+    if (this.life > this.maxLife || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  }
+  draw() {
+    const alpha = Math.sin(this.life / this.maxLife * Math.PI) * 0.6;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `${this.color},${alpha})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== SAKURA PETALS =====
+const sakuraContainer = document.getElementById('sakuraContainer');
+function createSakura() {
+  const petal = document.createElement('div');
+  petal.className = 'sakura';
+  petal.style.left = Math.random() * 100 + 'vw';
+  petal.style.width = petal.style.height = (6 + Math.random() * 10) + 'px';
+  petal.style.animationDuration = (6 + Math.random() * 8) + 's';
+  petal.style.animationDelay = (-Math.random() * 8) + 's';
+  petal.style.opacity = 0.4 + Math.random() * 0.6;
+  const colors = [
+    'linear-gradient(135deg,#ffb7c5,#ff6fa8)',
+    'linear-gradient(135deg,#d4a0ff,#b700ff)',
+    'linear-gradient(135deg,#a0d4ff,#00d4ff)',
+  ];
+  petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+  sakuraContainer.appendChild(petal);
+  setTimeout(() => petal.remove(), 15000);
+}
+setInterval(createSakura, 400);
+for (let i = 0; i < 15; i++) setTimeout(createSakura, i * 200);
+
+// ===== ANIME QUIZ =====
+const quizData = [
+  {
+    q: "Dalam anime Naruto, teknik andalan Naruto Uzumaki adalah…",
+    opts: ["Rasengan & Kage Bunshin", "Chidori & Sharingan", "Hiraishin no Jutsu", "Amaterasu"],
+    ans: 0,
+    ex: "Benar! Rasengan dan Kage Bunshin adalah teknik khas Naruto! 🍥"
+  },
+  {
+    q: "Siapa kapten Rukia Kuchiki di Gotei 13 dalam anime Bleach?",
+    opts: ["Kenpachi Zaraki", "Byakuya Kuchiki", "Retsu Unohana", "Shunsui Kyoraku"],
+    ans: 1,
+    ex: "Benar! Byakuya Kuchiki adalah kapten Squad 6 dan kakak angkat Rukia! 🌸"
+  },
+  {
+    q: "Buah Iblis apa yang dimakan Monkey D. Luffy dalam One Piece?",
+    opts: ["Mera Mera no Mi", "Yami Yami no Mi", "Gomu Gomu no Mi", "Hito Hito no Mi"],
+    ans: 2,
+    ex: "Betul! Gomu Gomu no Mi membuat Luffy menjadi manusia karet! 🏴‍☠️"
+  },
+  {
+    q: "Attack on Titan: Siapakah pemilik kekuatan Titan Serang (Attack Titan)?",
+    opts: ["Levi Ackerman", "Armin Arlert", "Mikasa Ackerman", "Eren Yeager"],
+    ans: 3,
+    ex: "Correct! Eren Yeager adalah pemilik Attack Titan dan Founding Titan! ⚔️"
+  },
+  {
+    q: "Dalam Demon Slayer, teknik pernapasan apa yang digunakan Tanjiro Kamado?",
+    opts: ["Moon Breathing", "Water Breathing & Hinokami Kagura", "Thunder Breathing", "Flame Breathing"],
+    ans: 1,
+    ex: "Tepat! Tanjiro menguasai Water Breathing dan Hinokami Kagura (Sun Breathing)! 🔥"
+  }
+];
+
+let qIdx = 0, score = 0, quizActive = false;
+
+function startQuiz() {
+  qIdx = 0; score = 0; quizActive = true;
+  document.getElementById('quizStartBtn').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quizData[qIdx];
+  // Progress dots
+  let dots = '';
+  for (let i=0; i<quizData.length; i++) {
+    let cls = i < qIdx ? 'done' : i === qIdx ? 'active' : '';
+    dots += `<div class="quiz-dot ${cls}"></div>`;
+  }
+  document.getElementById('quizProgress').innerHTML = dots;
+  document.getElementById('quiz-question').textContent = q.q;
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-score').textContent = `Skor: ${score} / ${quizData.length}`;
+
+  let optsHTML = '';
+  q.opts.forEach((opt, i) => {
+    optsHTML += `<button class="quiz-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${opt}</button>`;
+  });
+  document.getElementById('quizOptions').innerHTML = optsHTML;
+}
+
+function answerQuiz(chosen) {
+  const q = quizData[qIdx];
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach(b => b.disabled = true);
+
+  if (chosen === q.ans) {
+    score++;
+    btns[chosen].classList.add('correct');
+    document.getElementById('quiz-feedback').textContent = q.ex;
+    document.getElementById('quiz-feedback').style.color = '#77ff99';
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    document.getElementById('quiz-feedback').textContent = `Kurang tepat! Jawaban: ${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}`;
+    document.getElementById('quiz-feedback').style.color = '#ff8080';
+  }
+
+  document.getElementById('quiz-score').textContent = `Skor: ${score} / ${quizData.length}`;
+  qIdx++;
+
+  if (qIdx < quizData.length) {
+    setTimeout(renderQuestion, 2000);
+  } else {
+    setTimeout(() => showQuizResult(), 2000);
+  }
+}
+
+function showQuizResult() {
+  const pct = score / quizData.length;
+  let msg, emoji;
+  if (pct === 1)       { msg = "SEMPURNA! Kamu adalah Anime Master sejati! Layak jadi panitia Neroku Fest! 🏆"; emoji="🥇"; }
+  else if (pct >= 0.8) { msg = "Luar biasa! Pengetahuan anime-mu sangat kuat. Sampai jumpa di festival! 🌟"; emoji="⭐"; }
+  else if (pct >= 0.6) { msg = "Bagus! Kamu cukup berpengetahuan. Tambah koleksi tontonanmu ya! 📺"; emoji="👍"; }
+  else if (pct >= 0.4) { msg = "Lumayan! Masih perlu banyak belajar. Gabung ke komunitas anime Bandung! 📚"; emoji="💪"; }
+  else                 { msg = "Baru mulai nih? Tidak apa-apa! Datang ke Neroku Fest dan temukan dunia baru! 🌸"; emoji="🌱"; }
+
+  document.getElementById('quizProgress').innerHTML = quizData.map(()=>'<div class="quiz-dot done"></div>').join('');
+  document.getElementById('quiz-question').innerHTML = `<div class="quiz-result">${emoji}<br><br><strong style="color:#fff;font-family:var(--font-display);font-size:22px;letter-spacing:2px;">${score} / ${quizData.length}</strong><br><br>${msg}</div>`;
+  document.getElementById('quizOptions').innerHTML = '';
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-score').textContent = '';
+  document.getElementById('quizStartBtn').style.display = 'inline-block';
+  document.getElementById('quizStartBtn').textContent = '🔄 Main Lagi';
+  document.getElementById('quizStartBtn').setAttribute('onclick','startQuiz()');
+}
+</script>
+</body>
+</html>
